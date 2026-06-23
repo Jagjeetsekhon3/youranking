@@ -35,3 +35,12 @@ create table if not exists keyword_lists (
 -- 3. add policy:        create policy own_rows on ideas
 --                         using (user_id = auth.uid());
 -- Until then, the service role key handles access server-side.
+
+-- Settings: provider API keys managed from the Settings page.
+-- Stored server-side; the app only ever returns a masked preview.
+-- (Supabase's own creds stay in env — can't store them in here.)
+create table if not exists settings (
+  key         text primary key,
+  value       text not null,
+  updated_at  timestamptz not null default now()
+);

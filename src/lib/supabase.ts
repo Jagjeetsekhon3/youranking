@@ -32,6 +32,23 @@ export async function dbInsert(table: string, row: Record<string, unknown>) {
   return res.json();
 }
 
+export async function dbUpsert(
+  table: string,
+  rows: Record<string, unknown>[],
+  onConflict: string
+) {
+  const res = await fetch(`${URL}/rest/v1/${table}?on_conflict=${onConflict}`, {
+    method: "POST",
+    headers: {
+      ...headers(),
+      Prefer: "resolution=merge-duplicates,return=minimal",
+    },
+    body: JSON.stringify(rows),
+  });
+  if (!res.ok) throw new Error(`upsert ${table}: ${await res.text()}`);
+  return true;
+}
+
 export async function dbDelete(table: string, query: string) {
   const res = await fetch(`${URL}/rest/v1/${table}?${query}`, {
     method: "DELETE",

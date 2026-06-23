@@ -1,13 +1,14 @@
 // Claude client — thin wrapper. Called only by the router.
 import { RunOptions } from "./router";
+import { getKey } from "../settings";
 
 const API = "https://api.anthropic.com/v1/messages";
 
 export async function callClaude(
   opts: RunOptions & { model: string }
 ): Promise<string> {
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) throw new Error("ANTHROPIC_API_KEY missing");
+  const key = await getKey("ANTHROPIC_API_KEY");
+  if (!key) throw new Error("Anthropic key not set — add it in Settings.");
 
   const res = await fetch(API, {
     method: "POST",

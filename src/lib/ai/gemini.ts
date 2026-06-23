@@ -2,14 +2,15 @@
 // Supports inline images (base64) for vision tasks like the
 // Thumbnail A/B Reader. Endpoint: Generative Language API.
 import { RunOptions } from "./router";
+import { getKey } from "../settings";
 
 const BASE = "https://generativelanguage.googleapis.com/v1beta/models";
 
 export async function callGemini(
   opts: RunOptions & { model: string }
 ): Promise<string> {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) throw new Error("GEMINI_API_KEY missing");
+  const key = await getKey("GEMINI_API_KEY");
+  if (!key) throw new Error("Gemini key not set — add it in Settings.");
 
   // Build a single user turn: text + any images.
   const parts: any[] = [];

@@ -12,8 +12,9 @@ fully live and prove the whole architecture end to end; the rest are scaffolded.
 - **Title Lab** — type a topic, get 10 scored + ranked titles. Routed to **Claude**. Save winners to the Idea Bank.
 - **Thumbnail A/B Reader** — drop 2–3 thumbnails, get a side-by-side read and a winner. Routed to **Gemini** (vision). Nothing stored.
 - **Idea Bank** — your swipe file, backed by Supabase.
+- **Outlier Finder** — scan a niche for videos beating their channel's sub count. YouTube Data API + ratio scoring. Save outliers straight to the Idea Bank.
 
-Scaffolded (each page carries its own build spec): Outlier Finder, Niche Finder, SEO Audit.
+Scaffolded (each page carries its own build spec): Niche Finder, SEO Audit.
 
 ---
 
@@ -40,10 +41,25 @@ Title Lab needs `ANTHROPIC_API_KEY`. Thumbnail Reader needs `GEMINI_API_KEY`.
 Idea Bank needs Supabase — create a project, run `supabase/schema.sql` in the SQL
 editor, and paste `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` into `.env.local`.
 
+Outlier Finder needs `YOUTUBE_API_KEY` — in Google Cloud Console, enable **YouTube
+Data API v3** and create an API key. Free tier = 10,000 units/day; one scan ≈ 102 units
+(~95 scans/day). `search.list` is the expensive call (100u); everything else batches at
+1u. Cache by video id before going public — that's the scaling move.
+
 > Model ids live in `router.ts` (`MODELS`). Gemini ids shift often — verify against
 > current Google docs if a call 404s.
 
 ---
+
+## Settings page — managing keys
+
+A **Settings page** (`/settings`) manages your provider keys without touching Vercel
+env vars each time. Keys (Claude, Gemini, YouTube) save into the Supabase `settings`
+table; the app reads them there first, env as fallback. The page only ever shows the
+last 4 chars, and each key has a **Test** button that pings the provider live.
+
+Bootstrap order: set `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` in env first (the DB
+creds can't live in the DB), run the schema, then add the rest in Settings.
 
 ## Build order (don't skip)
 
