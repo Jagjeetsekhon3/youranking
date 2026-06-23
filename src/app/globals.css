@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap");
+
+/* ── YouRanking tokens ──────────────────────────────────────────
+   Identity: a signal control room. Deep ink, one hot signal-orange
+   for "this is hot", a calm green for healthy scores. Data is shown
+   in telemetry mono so numbers feel like instruments, not copy. */
+:root {
+  --ink: #0e1116;        /* background */
+  --surface: #161b22;    /* cards */
+  --surface-2: #1c232c;  /* raised */
+  --border: #232a33;
+  --text: #e6edf3;
+  --muted: #8b98a5;
+  --signal: #ff5b2e;     /* hot / accent */
+  --signal-dim: #ff5b2e22;
+  --good: #3ddc97;       /* healthy score */
+  --mid: #ffc857;        /* middling score */
+  --bad: #ff6b6b;        /* weak score */
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.01em; }
+.mono { font-family: "JetBrains Mono", monospace; }
+
+/* layout shell */
+.shell { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 232px; flex-shrink: 0; border-right: 1px solid var(--border);
+  padding: 22px 16px; position: sticky; top: 0; height: 100vh;
+  background: var(--ink);
+}
+.brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 28px; padding: 0 8px; }
+.brand b { font-family: "Space Grotesk"; font-weight: 700; font-size: 20px; }
+.brand .dot { color: var(--signal); }
+.brand small { color: var(--muted); font-size: 11px; }
+
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav a {
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+  border-radius: 10px; color: var(--muted); text-decoration: none;
+  font-size: 14px; transition: background .12s, color .12s;
+}
+.nav a:hover { background: var(--surface); color: var(--text); }
+.nav a.active { background: var(--signal-dim); color: var(--text); }
+.nav a .tag { margin-left: auto; font-size: 10px; color: var(--muted); }
+
+.main { flex: 1; padding: 34px 40px; max-width: 980px; }
+.eyebrow { color: var(--signal); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+.lede { color: var(--muted); margin-top: 6px; max-width: 60ch; }
+
+/* controls */
+.field {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); border-radius: 10px; padding: 12px 14px; font: inherit;
+}
+.field:focus { outline: 2px solid var(--signal); outline-offset: 1px; }
+.btn {
+  background: var(--signal); color: #1a0d07; border: none; font-weight: 600;
+  padding: 12px 18px; border-radius: 10px; cursor: pointer; font: inherit;
+  font-weight: 600;
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn.ghost { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.row { display: flex; gap: 12px; align-items: center; }
+.grid { display: grid; gap: 12px; }
+
+/* score chip — the telemetry signature */
+.score { font-family: "JetBrains Mono"; font-weight: 700; font-size: 13px; padding: 3px 8px; border-radius: 7px; }
+.score.good { background: #3ddc9722; color: var(--good); }
+.score.mid  { background: #ffc85722; color: var(--mid); }
+.score.bad  { background: #ff6b6b22; color: var(--bad); }
+
+.err { color: var(--bad); font-size: 14px; }
+.muted { color: var(--muted); }
+.stub-note { border-left: 2px solid var(--signal); padding-left: 14px; color: var(--muted); }
+
+@media (max-width: 720px) {
+  .sidebar { display: none; }
+  .main { padding: 22px; }
+}
