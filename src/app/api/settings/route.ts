@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { dbUpsert } from "@/lib/supabase";
+import { dbUpsert, SUPABASE_READY } from "@/lib/supabase";
 import { keyStatus, bustCache, getKey, MANAGED_KEYS } from "@/lib/settings";
 
 export const runtime = "nodejs";
@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 export async function GET() {
   try {
     const keys = await keyStatus();
-    return NextResponse.json({ keys });
+    return NextResponse.json({ keys, supabaseReady: SUPABASE_READY });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

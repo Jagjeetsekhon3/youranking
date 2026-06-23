@@ -11,6 +11,7 @@ const LABELS: Record<string, { label: string; hint: string }> = {
 
 export default function Settings() {
   const [statuses, setStatuses] = useState<Status[]>([]);
+  const [ready, setReady] = useState(true);
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [tests, setTests] = useState<Record<string, { ok: boolean; detail: string } | "running">>({});
   const [saving, setSaving] = useState(false);
@@ -20,6 +21,7 @@ export default function Settings() {
     const res = await fetch("/api/settings");
     const data = await res.json();
     setStatuses(data.keys || []);
+    setReady(data.supabaseReady !== false);
   }
   useEffect(() => { load(); }, []);
 
@@ -56,6 +58,18 @@ export default function Settings() {
         Keys are stored server-side in your own Supabase and never sent back to the
         browser — you only ever see the last 4 characters. Saved keys override env vars.
       </p>
+
+      {!ready && (
+        <div className="card" style={{ marginTop: 18, borderColor: "var(--bad)" }}>
+          <b style={{ color: "var(--bad)" }}>Supabase not connected</b>
+          <p className="muted" style={{ margin: "6px 0 0", fontSize: 14 }}>
+            Saving keys here needs Supabase. Add <span className="mono">SUPABASE_URL</span> and{" "}
+            <span className="mono">SUPABASE_SERVICE_ROLE_KEY</span> to your Vercel env, run{" "}
+            <span className="mono">supabase/schema.sql</span>, then redeploy. Until then you can
+            still run every feature by setting the provider keys as env vars instead.
+          </p>
+        </div>
+      )}
 
       <div className="grid" style={{ marginTop: 22, gap: 14 }}>
         {statuses.map((s) => {

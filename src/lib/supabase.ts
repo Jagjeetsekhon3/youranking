@@ -2,19 +2,29 @@
 // Bearer-token style, no SDK — same pattern that kept Vercel happy
 // on your other builds, and travels cleanly to the Chrome extension.
 
-const URL = process.env.SUPABASE_URL!;
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const URL = process.env.SUPABASE_URL;
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+export const SUPABASE_READY = !!URL && !!SERVICE_KEY;
+
+const NOT_READY =
+  "Supabase isn't connected. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment, then run supabase/schema.sql.";
+
+function base() {
+  if (!URL || !SERVICE_KEY) throw new Error(NOT_READY);
+  return URL;
+}
 
 function headers() {
   return {
-    apikey: SERVICE_KEY,
+    apikey: SERVICE_KEY as string,
     Authorization: `Bearer ${SERVICE_KEY}`,
     "content-type": "application/json",
   };
 }
 
 export async function dbSelect(table: string, query = "") {
-  const res = await fetch(`${URL}/rest/v1/${table}?${query}`, {
+  const res = await fetch(`${base()}/rest/v1/${table}?${query}`, {
     headers: headers(),
     cache: "no-store",
   });
@@ -23,7 +33,7 @@ export async function dbSelect(table: string, query = "") {
 }
 
 export async function dbInsert(table: string, row: Record<string, unknown>) {
-  const res = await fetch(`${URL}/rest/v1/${table}`, {
+  const res = await fetch(`${base()}/rest/v1/${table}`, {
     method: "POST",
     headers: { ...headers(), Prefer: "return=representation" },
     body: JSON.stringify(row),
@@ -37,7 +47,7 @@ export async function dbUpsert(
   rows: Record<string, unknown>[],
   onConflict: string
 ) {
-  const res = await fetch(`${URL}/rest/v1/${table}?on_conflict=${onConflict}`, {
+  const res = await fetch(`${base()}/rest/v1/${table}?on_conflict=${onConflict}`, {
     method: "POST",
     headers: {
       ...headers(),
@@ -50,7 +60,7 @@ export async function dbUpsert(
 }
 
 export async function dbDelete(table: string, query: string) {
-  const res = await fetch(`${URL}/rest/v1/${table}?${query}`, {
+  const res = await fetch(`${base()}/rest/v1/${table}?${query}`, {
     method: "DELETE",
     headers: headers(),
   });
