@@ -14,7 +14,8 @@ fully live and prove the whole architecture end to end; the rest are scaffolded.
 - **Idea Bank** — your swipe file, backed by Supabase.
 - **Outlier Finder** — scan a niche for videos beating their channel's sub count. YouTube Data API + ratio scoring. Save outliers straight to the Idea Bank.
 
-Scaffolded (each page carries its own build spec): Niche Finder, SEO Audit.
+Scaffolded — the two remaining v1 features to build: **SEO Audit**, **Niche Finder**.
+(Router task slots `seo.audit` and `niche.score` are already wired.)
 
 ---
 
@@ -50,6 +51,24 @@ Data API v3** and create an API key. Free tier = 10,000 units/day; one scan ≈ 
 > current Google docs if a call 404s.
 
 ---
+
+## Locking the app (do this before sharing the URL)
+
+The app is gated by a single password via middleware — it protects **every page
+AND every API route**, so no one can burn your API quota by hitting `/api/titles`
+directly. Set one env var:
+
+```
+APP_PASSWORD=your-strong-password
+```
+
+Set it in Vercel env and redeploy. Visiting any page redirects to `/login`; API calls
+without a session return 401. The session is an httpOnly HMAC cookie (the password is
+never stored in the cookie). Log out from the sidebar. **If APP_PASSWORD is unset, the
+app stays open** — so don't forget it.
+
+For going public later this becomes real per-user accounts (Supabase Auth); the single
+password is the right size while it's just you.
 
 ## Settings page — managing keys
 
