@@ -57,12 +57,14 @@ async function testProvider(name: string): Promise<{ ok: boolean; detail: string
       return r.ok ? { ok: true, detail: "Connected" } : { ok: false, detail: `HTTP ${r.status}` };
     }
     if (name === "GEMINI_API_KEY") {
+      const { pickGeminiModel } = await import("@/lib/ai/gemini");
+      const model = await pickGeminiModel("gemini-flash-latest", key);
       const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${key}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
         { method: "POST", headers: { "content-type": "application/json" },
           body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: "hi" }] }], generationConfig: { maxOutputTokens: 1 } }) }
       );
-      return r.ok ? { ok: true, detail: "Connected" } : { ok: false, detail: `HTTP ${r.status}` };
+      return r.ok ? { ok: true, detail: `Connected (${model})` } : { ok: false, detail: `HTTP ${r.status}` };
     }
     if (name === "YOUTUBE_API_KEY") {
       const r = await fetch(

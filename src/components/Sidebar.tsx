@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const NAV = [
   { href: "/", label: "Dashboard" },
@@ -8,13 +8,22 @@ const NAV = [
   { href: "/niche-finder", label: "Niche Finder", tag: "soon" },
   { href: "/title-lab", label: "Title Lab", tag: "live" },
   { href: "/thumbnail-reader", label: "Thumbnail A/B", tag: "live" },
-  { href: "/seo-audit", label: "SEO Audit", tag: "soon" },
+  { href: "/seo-audit", label: "SEO Audit", tag: "live" },
   { href: "/idea-bank", label: "Idea Bank", tag: "live" },
   { href: "/settings", label: "Settings" },
 ];
 
 export default function Sidebar() {
   const path = usePathname();
+  const router = useRouter();
+  if (path === "/login") return null;
+
+  async function logout() {
+    await fetch("/api/auth", { method: "DELETE" });
+    router.push("/login");
+    router.refresh();
+  }
+
   return (
     <aside className="sidebar">
       <div className="brand">
@@ -31,6 +40,7 @@ export default function Sidebar() {
             )}
           </Link>
         ))}
+        <button onClick={logout} className="nav-logout">Log out</button>
       </nav>
     </aside>
   );

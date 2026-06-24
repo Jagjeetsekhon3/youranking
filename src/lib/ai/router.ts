@@ -13,8 +13,8 @@ import { callGemini } from "./gemini";
 export const MODELS = {
   claudeSonnet: "claude-sonnet-4-6",   // craft + judgment
   claudeOpus: "claude-opus-4-8",        // hardest reasoning only (rare)
-  geminiFlash: "gemini-3-flash",        // vision + default multimodal
-  geminiFlashLite: "gemini-3.1-flash-lite", // cheap bulk work
+  geminiFlash: "gemini-flash-latest",        // vision + default multimodal
+  geminiFlashLite: "gemini-flash-lite-latest", // cheap bulk work
 } as const;
 
 // Every task the app can ask for, mapped to a provider + model.
@@ -38,6 +38,7 @@ export interface RunOptions {
   system?: string;
   prompt: string;
   images?: { mediaType: string; data: string }[]; // base64, for Gemini vision
+  videoUrl?: string; // a YouTube URL for Gemini to watch (ignored by Claude)
   json?: boolean; // ask the model for raw JSON
 }
 

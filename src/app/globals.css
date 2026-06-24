@@ -91,3 +91,10 @@ h1, h2, h3 { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.01em; 
   .sidebar { display: none; }
   .main { padding: 22px; }
 }
+
+.nav-logout {
+  margin-top: 12px; text-align: left; background: none; border: none;
+  color: var(--muted); font: inherit; font-size: 14px; padding: 9px 10px;
+  border-radius: 10px; cursor: pointer;
+}
+.nav-logout:hover { background: var(--surface); color: var(--bad); }

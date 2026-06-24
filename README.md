@@ -13,9 +13,9 @@ fully live and prove the whole architecture end to end; the rest are scaffolded.
 - **Thumbnail A/B Reader** — drop 2–3 thumbnails, get a side-by-side read and a winner. Routed to **Gemini** (vision). Nothing stored.
 - **Idea Bank** — your swipe file, backed by Supabase.
 - **Outlier Finder** — scan a niche for videos beating their channel's sub count. YouTube Data API + ratio scoring. Save outliers straight to the Idea Bank.
+- **SEO Audit** — paste a URL; Gemini watches the video and scores title, hook, thumbnail-promise, description, chapters with specific fixes. Falls back to metadata-only if the video can't be ingested.
 
-Scaffolded — the two remaining v1 features to build: **SEO Audit**, **Niche Finder**.
-(Router task slots `seo.audit` and `niche.score` are already wired.)
+Scaffolded — the one remaining v1 feature to build: **Niche Finder** (router slot `niche.score` already wired).
 
 ---
 

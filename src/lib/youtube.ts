@@ -112,3 +112,31 @@ export async function getChannels(ids: string[]): Promise<Map<string, ChannelSta
   }
   return map;
 }
+
+export interface VideoFull extends VideoStat {
+  description: string;
+  tags: string[];
+  duration: string; // ISO 8601, e.g. PT10M30S
+}
+
+// Full detail for one video (snippet + stats + contentDetails). 1 unit.
+export async function getVideoFull(id: string): Promise<VideoFull | null> {
+  const data = await get("videos", {
+    part: "snippet,statistics,contentDetails",
+    id,
+  });
+  const v = (data.items || [])[0];
+  if (!v) return null;
+  return {
+    id: v.id,
+    title: v.snippet?.title ?? "",
+    channelId: v.snippet?.channelId ?? "",
+    channelTitle: v.snippet?.channelTitle ?? "",
+    publishedAt: v.snippet?.publishedAt ?? "",
+    views: Number(v.statistics?.viewCount ?? 0),
+    thumb: v.snippet?.thumbnails?.medium?.url ?? "",
+    description: v.snippet?.description ?? "",
+    tags: v.snippet?.tags ?? [],
+    duration: v.contentDetails?.duration ?? "",
+  };
+}
