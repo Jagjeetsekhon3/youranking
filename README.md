@@ -14,8 +14,9 @@ fully live and prove the whole architecture end to end; the rest are scaffolded.
 - **Idea Bank** — your swipe file, backed by Supabase.
 - **Outlier Finder** — scan a niche for videos beating their channel's sub count. YouTube Data API + ratio scoring. Save outliers straight to the Idea Bank.
 - **SEO Audit** — paste a URL; Gemini watches the video and scores title, hook, thumbnail-promise, description, chapters with specific fixes. Falls back to metadata-only if the video can't be ingested.
+- **Niche Finder** — real 50-video scan → demand, beatable competition, momentum, RPM estimate, and 3-4 sub-niche entry points. Region + format filters.
 
-Scaffolded — the one remaining v1 feature to build: **Niche Finder** (router slot `niche.score` already wired).
+**v1 is feature-complete.** All six features are live.
 
 ---
 

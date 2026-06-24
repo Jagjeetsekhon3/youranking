@@ -33,6 +33,8 @@ export interface SearchOpts {
   days?: number;     // recency window — outliers should be fresh
   order?: "relevance" | "viewCount" | "date";
   max?: number;      // up to 50 per search call
+  region?: string;   // ISO country code, e.g. "IN"
+  duration?: "any" | "short" | "medium" | "long"; // short <4m, long >20m
 }
 
 // COSTS 100 UNITS. Returns up to 50 video ids. Call sparingly + cache.
@@ -48,6 +50,8 @@ export async function searchVideoIds(o: SearchOpts): Promise<string[]> {
     const since = new Date(Date.now() - o.days * 864e5).toISOString();
     params.publishedAfter = since;
   }
+  if (o.region) params.regionCode = o.region;
+  if (o.duration && o.duration !== "any") params.videoDuration = o.duration;
   const data = await get("search", params);
   return (data.items || []).map((i: any) => i.id?.videoId).filter(Boolean);
 }
