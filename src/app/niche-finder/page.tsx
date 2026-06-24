@@ -47,12 +47,15 @@ export default function NicheFinder() {
     alert("Saved to Idea Bank");
   }
 
-  const Tile = ({ label, val }: { label: string; val: number }) => (
-    <div className="card" style={{ textAlign: "center" }}>
-      <div className={`score ${band(val)}`} style={{ fontSize: 22, padding: "8px 14px" }}>{val}</div>
-      <div className="mono muted" style={{ fontSize: 10, marginTop: 6 }}>{label}</div>
-    </div>
-  );
+  const Tile = ({ label, val, inverted }: { label: string; val: number; inverted?: boolean }) => {
+    const b = inverted ? (val >= 70 ? "bad" : val >= 45 ? "mid" : "good") : band(val);
+    return (
+      <div className="card" style={{ textAlign: "center" }}>
+        <div className={`score ${b}`} style={{ fontSize: 22, padding: "8px 14px" }}>{val}</div>
+        <div className="mono muted" style={{ fontSize: 10, marginTop: 6 }}>{label}</div>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -88,7 +91,7 @@ export default function NicheFinder() {
         <div style={{ marginTop: 22 }}>
           <div className="grid" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
             <Tile label="DEMAND" val={res.demand} />
-            <Tile label="COMPETITION" val={100 - res.competition} />
+            <Tile label="COMPETITION" val={res.competition} inverted />
             <Tile label="OPPORTUNITY" val={res.opportunity} />
           </div>
 
