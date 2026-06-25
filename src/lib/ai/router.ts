@@ -24,10 +24,12 @@ type Route = { provider: "claude" | "gemini"; model: string };
 export const TASKS = {
   "title.generate": { provider: "claude", model: MODELS.claudeSonnet },
   "title.score":    { provider: "claude", model: MODELS.claudeSonnet },
-  "hook.rewrite":   { provider: "claude", model: MODELS.claudeSonnet },
+  "hook.rewrite":   { provider: "claude", model: MODELS.claudeSonnet },  // Claude crafts the new hooks
+  "hook.analyze":   { provider: "gemini", model: MODELS.geminiFlash },   // Gemini watches the opening
   "thumbnail.read": { provider: "gemini", model: MODELS.geminiFlash },     // vision
   "seo.audit":      { provider: "gemini", model: MODELS.geminiFlash },     // reads the video
   "niche.score":    { provider: "gemini", model: MODELS.geminiFlash },
+  "competitor.gap": { provider: "gemini", model: MODELS.geminiFlash },
   "tags.generate":  { provider: "gemini", model: MODELS.geminiFlashLite }, // bulk
   "keyword.expand": { provider: "gemini", model: MODELS.geminiFlashLite }, // bulk
 } satisfies Record<string, Route>;

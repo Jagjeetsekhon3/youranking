@@ -15,8 +15,12 @@ fully live and prove the whole architecture end to end; the rest are scaffolded.
 - **Outlier Finder** — scan a niche for videos beating their channel's sub count. YouTube Data API + ratio scoring. Save outliers straight to the Idea Bank.
 - **SEO Audit** — paste a URL; Gemini watches the video and scores title, hook, thumbnail-promise, description, chapters with specific fixes. Falls back to metadata-only if the video can't be ingested.
 - **Niche Finder** — real 50-video scan → demand, beatable competition, momentum, RPM estimate, and 3-4 sub-niche entry points. Region + format filters.
+- **Competitor Gap** — resolve rival channels, pull their recent top videos, Gemini surfaces winning themes + gaps you can take. Optional own-channel comparison.
+- **Tags & Description** — keyword-placed description + 8-12 tags + hashtags from a topic or URL. Copy into Studio.
+- **Hook Lab** — Gemini watches your opening, Claude writes stronger hooks. Shorts (1-2s) or long-form (15s). The clearest showcase of both models on one feature.
 
-**v1 is feature-complete.** All six features are live.
+**Feature-complete for solo use.** Nine tools live. Deferred (the "going public" layer):
+Chrome extension, billing/multi-tenant, Trend Radar (needs paid Trends API), rank tracking.
 
 ---
 

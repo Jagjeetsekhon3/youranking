@@ -5,9 +5,12 @@ import { usePathname, useRouter } from "next/navigation";
 const NAV = [
   { href: "/", label: "Dashboard" },
   { href: "/outlier-finder", label: "Outlier Finder", tag: "live" },
+  { href: "/competitor-gap", label: "Competitor Gap", tag: "live" },
   { href: "/niche-finder", label: "Niche Finder", tag: "live" },
   { href: "/title-lab", label: "Title Lab", tag: "live" },
+  { href: "/metadata", label: "Tags & Description", tag: "live" },
   { href: "/thumbnail-reader", label: "Thumbnail A/B", tag: "live" },
+  { href: "/hook-lab", label: "Hook Lab", tag: "live" },
   { href: "/seo-audit", label: "SEO Audit", tag: "live" },
   { href: "/idea-bank", label: "Idea Bank", tag: "live" },
   { href: "/settings", label: "Settings" },

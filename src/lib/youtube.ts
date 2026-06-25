@@ -144,3 +144,39 @@ export async function getVideoFull(id: string): Promise<VideoFull | null> {
     duration: v.contentDetails?.duration ?? "",
   };
 }
+
+// Resolve a channel id from a handle (@name), channel URL, or UC id. 1 unit
+// (or 100 if we must fall back to search for a plain custom name).
+export async function resolveChannelId(input: string): Promise<string | null> {
+  const s = input.trim();
+  const ucMatch = s.match(/(UC[\w-]{22})/);
+  if (ucMatch) return ucMatch[1];
+
+  const handle = s.match(/@([\w.-]+)/)?.[1] || (!s.includes("/") && !s.includes(" ") ? s.replace(/^@/, "") : null);
+  if (handle) {
+    const data = await get("channels", { part: "id", forHandle: handle });
+    const id = (data.items || [])[0]?.id;
+    if (id) return id;
+  }
+  // last resort: search for the channel by name (100 units)
+  const data = await get("search", { part: "id", type: "channel", q: s, maxResults: "1" });
+  return (data.items || [])[0]?.id?.channelId ?? null;
+}
+
+// A channel's recent uploads as VideoStat[]. ~3 units total.
+export async function getChannelRecentVideos(channelId: string, max = 15): Promise<{ title: string; subs: number; videos: VideoStat[] }> {
+  const ch = await get("channels", { part: "snippet,statistics,contentDetails", id: channelId });
+  const c = (ch.items || [])[0];
+  if (!c) return { title: "", subs: 0, videos: [] };
+  const uploads = c.contentDetails?.relatedPlaylists?.uploads;
+  if (!uploads) return { title: c.snippet?.title ?? "", subs: Number(c.statistics?.subscriberCount ?? 0), videos: [] };
+
+  const pl = await get("playlistItems", { part: "contentDetails", playlistId: uploads, maxResults: String(max) });
+  const ids = (pl.items || []).map((i: any) => i.contentDetails?.videoId).filter(Boolean);
+  const videos = ids.length ? await getVideos(ids) : [];
+  return {
+    title: c.snippet?.title ?? "",
+    subs: Number(c.statistics?.subscriberCount ?? 0),
+    videos,
+  };
+}

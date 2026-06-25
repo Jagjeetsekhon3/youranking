@@ -6,9 +6,8 @@ export default function Home() {
         Find winning ideas. Package them to win.
       </h1>
       <p className="lede">
-        Two features are live and prove the whole stack — Claude writing titles,
-        Gemini reading thumbnails, both behind one router. The rest are scaffolded
-        and ready to build into.
+        Nine tools across the whole workflow — find what's working, decide where to play,
+        package it, test it, and fix it. Claude writes; Gemini watches; one router decides who.
       </p>
 
       <div className="grid" style={{ gridTemplateColumns: "1fr 1fr", marginTop: 28 }}>
