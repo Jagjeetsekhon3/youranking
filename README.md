@@ -28,6 +28,23 @@ fully live and prove the whole architecture end to end; the rest are scaffolded.
 real-traffic A/B testing, best-time-to-publish, your own retention curves + real RPM.
 Still parked for going-public: Chrome extension, billing/multi-tenant.
 
+## My Channel (OAuth — real analytics)
+
+`/my-channel` connects your own channel via Google OAuth (read-only) and shows **real
+retention curves**, **true RPM/revenue**, and your **best publishing day** — data the
+public Data API can't give. Setup:
+
+1. Google Cloud Console → APIs & Services → enable **YouTube Analytics API** + **YouTube Data API v3**.
+2. OAuth consent screen → External → add yourself as a **Test user** (avoids full app verification while it's just you).
+3. Credentials → Create **OAuth client ID** → Web application → Authorized redirect URI = `https://YOURDOMAIN/api/oauth/callback`.
+4. Put the client id/secret in Vercel env as `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`, redeploy.
+5. Open My Channel → Connect → grant access. The refresh token is stored in your `settings` table.
+
+**Not built (by design):** real-traffic A/B testing — YouTube's native Test & Compare isn't
+API-accessible and the Analytics API doesn't expose impressions/CTR, so a DIY version can't
+measure the click. Use YouTube's free native Test & Compare instead. Best-time is day-level
+(hour-level audience-online data is Studio-only).
+
 ---
 
 ## The keystone: the model router

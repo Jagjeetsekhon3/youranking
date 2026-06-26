@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const NAV = [
   { href: "/", label: "Dashboard" },
+  { href: "/my-channel", label: "My Channel", tag: "live" },
   { href: "/daily-ideas", label: "Daily Ideas", tag: "live" },
   { href: "/outlier-finder", label: "Outlier Finder", tag: "live" },
   { href: "/velocity", label: "View Velocity", tag: "live" },
