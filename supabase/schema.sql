@@ -44,3 +44,19 @@ create table if not exists settings (
   value       text not null,
   updated_at  timestamptz not null default now()
 );
+
+-- View-velocity tracking: snapshot a video's views over time.
+create table if not exists tracked_videos (
+  id          text primary key,        -- youtube video id
+  title       text,
+  channel     text,
+  thumb       text,
+  added_at    timestamptz not null default now()
+);
+create table if not exists video_snapshots (
+  id          uuid primary key default gen_random_uuid(),
+  video_id    text not null references tracked_videos(id) on delete cascade,
+  views       bigint not null,
+  taken_at    timestamptz not null default now()
+);
+create index if not exists idx_snap_video on video_snapshots(video_id, taken_at);

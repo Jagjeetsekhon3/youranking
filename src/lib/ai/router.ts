@@ -23,6 +23,7 @@ type Route = { provider: "claude" | "gemini"; model: string };
 
 export const TASKS = {
   "title.generate": { provider: "claude", model: MODELS.claudeSonnet },
+  "ideas.daily":    { provider: "claude", model: MODELS.claudeSonnet },
   "title.score":    { provider: "claude", model: MODELS.claudeSonnet },
   "hook.rewrite":   { provider: "claude", model: MODELS.claudeSonnet },  // Claude crafts the new hooks
   "hook.analyze":   { provider: "gemini", model: MODELS.geminiFlash },   // Gemini watches the opening

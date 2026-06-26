@@ -9,11 +9,22 @@ export const runtime = "nodejs";
 export async function POST(req: NextRequest) {
   try {
     const { images } = await req.json();
-    if (!Array.isArray(images) || images.length < 2) {
+    if (!Array.isArray(images) || images.length < 1) {
       return NextResponse.json(
-        { error: "Upload at least 2 thumbnails to compare." },
+        { error: "Upload at least 1 thumbnail." },
         { status: 400 }
       );
+    }
+
+    // Single thumbnail → analyzer mode (score + eye-path + squint test).
+    if (images.length === 1) {
+      const system =
+        "You are a YouTube thumbnail analyst. You judge a single thumbnail the way the feed does: " +
+        "in a fraction of a second, at phone size, against a crowded feed.";
+      const prompt = `Analyse this one thumbnail.
+Reply ONLY with JSON: {"single":true,"overall":0-100,"clickAppeal":0-100,"clarity":0-100,"legibility":0-100,"eyePath":"where the eye lands first and the path it follows","squintTest":"does it still read when blurred/small — verdict","fixes":["specific improvements"]}`;
+      const raw = await run("thumbnail.read", { system, prompt, images, json: true });
+      return NextResponse.json(JSON.parse(raw));
     }
 
     const system =

@@ -7,6 +7,7 @@ const LABELS: Record<string, { label: string; hint: string }> = {
   ANTHROPIC_API_KEY: { label: "Claude (Anthropic)", hint: "Titles, hooks, scripts. console.anthropic.com" },
   GEMINI_API_KEY: { label: "Gemini (Google AI)", hint: "Thumbnails, video, bulk. aistudio.google.com" },
   YOUTUBE_API_KEY: { label: "YouTube Data API v3", hint: "Outlier Finder. Google Cloud Console" },
+  SERPAPI_KEY: { label: "SerpApi (optional)", hint: "Trend Radar. Free 250/mo tier at serpapi.com" },
 };
 
 export default function Settings() {

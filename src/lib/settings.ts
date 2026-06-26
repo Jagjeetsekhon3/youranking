@@ -12,6 +12,7 @@ export const MANAGED_KEYS = [
   "ANTHROPIC_API_KEY",
   "GEMINI_API_KEY",
   "YOUTUBE_API_KEY",
+  "SERPAPI_KEY",
 ] as const;
 export type ManagedKey = (typeof MANAGED_KEYS)[number];
 

@@ -18,9 +18,15 @@ fully live and prove the whole architecture end to end; the rest are scaffolded.
 - **Competitor Gap** — resolve rival channels, pull their recent top videos, Gemini surfaces winning themes + gaps you can take. Optional own-channel comparison.
 - **Tags & Description** — keyword-placed description + 8-12 tags + hashtags from a topic or URL. Copy into Studio.
 - **Hook Lab** — Gemini watches your opening, Claude writes stronger hooks. Shorts (1-2s) or long-form (15s). The clearest showcase of both models on one feature.
+- **Daily Ideas** — Claude generates fresh video ideas daily, grounded in your saved Idea Bank so they don't repeat.
+- **View Velocity** — track videos; a daily Vercel-cron snapshot builds a views/day curve so you catch what's breaking out early. Needs Supabase + CRON_SECRET.
+- **Keyword Research** — free YouTube autocomplete mining + Gemini clustering and long-tail flags.
+- **Trend Radar** — SerpApi Google Trends on the YouTube property; rising/steady/fading direction. Needs SERPAPI_KEY (free tier).
+- **Thumbnail A/B (upgraded)** — now also scores a *single* thumbnail (eye-path, squint test, fixes), not just comparisons.
 
-**Feature-complete for solo use.** Nine tools live. Deferred (the "going public" layer):
-Chrome extension, billing/multi-tenant, Trend Radar (needs paid Trends API), rank tracking.
+**13 tools live.** Next planned build = the OAuth "My Channel" cluster (needs a Google OAuth app):
+real-traffic A/B testing, best-time-to-publish, your own retention curves + real RPM.
+Still parked for going-public: Chrome extension, billing/multi-tenant.
 
 ---
 

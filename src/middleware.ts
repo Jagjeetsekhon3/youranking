@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { COOKIE, makeToken } from "@/lib/auth";
 
 // Public paths that must work without a session.
-const PUBLIC = ["/login", "/api/auth"];
+const PUBLIC = ["/login", "/api/auth", "/api/cron"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

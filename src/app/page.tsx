@@ -6,7 +6,7 @@ export default function Home() {
         Find winning ideas. Package them to win.
       </h1>
       <p className="lede">
-        Nine tools across the whole workflow — find what's working, decide where to play,
+        Thirteen tools across the whole workflow — find what's working, decide where to play,
         package it, test it, and fix it. Claude writes; Gemini watches; one router decides who.
       </p>
 

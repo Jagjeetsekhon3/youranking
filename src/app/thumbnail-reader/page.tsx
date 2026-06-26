@@ -10,7 +10,11 @@ type Read = {
   standout: string;
   overall: number;
 };
-type Result = { thumbnails: Read[]; winner: string; verdict: string; fixes: string[] };
+type Result = {
+  thumbnails?: Read[]; winner?: string; verdict?: string; fixes?: string[];
+  single?: boolean; overall?: number; clickAppeal?: number; clarity?: number;
+  legibility?: number; eyePath?: string; squintTest?: string;
+};
 
 function band(s: number) {
   return s >= 75 ? "good" : s >= 55 ? "mid" : "bad";
@@ -61,20 +65,21 @@ export default function ThumbnailReader() {
   }
 
   const labels = ["A", "B", "C"];
+  const single = result && (result as any).single;
 
   return (
     <div>
       <div className="eyebrow">Quick gut-check &middot; Gemini</div>
       <h1 style={{ fontSize: 30, margin: "8px 0 0" }}>Thumbnail A/B Reader</h1>
       <p className="lede">
-        Drop 2–3 thumbnails. Get a side-by-side read and a winner. Nothing is stored —
-        images are analysed once and discarded.
+        Drop <b>1</b> thumbnail for a full analyzer read (eye-path, squint test, fixes), or
+        <b> 2–3</b> to compare and pick a winner. Nothing is stored.
       </p>
 
       <div className="row" style={{ marginTop: 22 }}>
         <input type="file" accept="image/*" multiple onChange={onFiles} className="field" />
-        <button className="btn" onClick={analyze} disabled={loading || payload.length < 2}>
-          {loading ? "Reading…" : "Compare"}
+        <button className="btn" onClick={analyze} disabled={loading || payload.length < 1}>
+          {loading ? "Reading…" : payload.length === 1 ? "Analyze" : "Compare"}
         </button>
       </div>
 
@@ -91,7 +96,36 @@ export default function ThumbnailReader() {
 
       {err && <p className="err" style={{ marginTop: 16 }}>{err}</p>}
 
-      {result && (
+      {result && single && (
+        <div style={{ marginTop: 22 }}>
+          <div className="card row" style={{ justifyContent: "space-between", borderColor: "var(--signal)" }}>
+            <div>
+              <div className="eyebrow">Eye path</div>
+              <p style={{ margin: "8px 0 0", maxWidth: "52ch" }}>{result.eyePath}</p>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div className={`score ${band(result.overall || 0)}`} style={{ fontSize: 22, padding: "8px 14px" }}>{result.overall}</div>
+              <div className="mono muted" style={{ fontSize: 10, marginTop: 4 }}>OVERALL</div>
+            </div>
+          </div>
+          <div className="card" style={{ marginTop: 12 }}>
+            <div className="mono" style={{ fontSize: 12, color: "var(--muted)" }}>
+              appeal {result.clickAppeal} &middot; clarity {result.clarity} &middot; legible {result.legibility}
+            </div>
+            <p style={{ fontSize: 14, marginTop: 10 }}><b>Squint test:</b> {result.squintTest}</p>
+          </div>
+          {result.fixes && result.fixes.length > 0 && (
+            <div className="card" style={{ marginTop: 12 }}>
+              <div className="eyebrow">Fixes</div>
+              <ul style={{ margin: "8px 0 0", paddingLeft: 18 }}>
+                {result.fixes.map((f, i) => <li key={i} style={{ marginBottom: 4 }}>{f}</li>)}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      {result && !single && result.thumbnails && (
         <div style={{ marginTop: 22 }}>
           <div className="card" style={{ borderColor: "var(--signal)" }}>
             <div className="eyebrow">Winner &middot; {result.winner}</div>
@@ -115,7 +149,7 @@ export default function ThumbnailReader() {
             ))}
           </div>
 
-          {result.fixes?.length > 0 && (
+          {result.fixes && result.fixes.length > 0 && (
             <div className="card" style={{ marginTop: 12 }}>
               <div className="eyebrow">Fixes</div>
               <ul style={{ margin: "8px 0 0", paddingLeft: 18 }}>
