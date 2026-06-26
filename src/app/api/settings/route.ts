@@ -72,6 +72,14 @@ async function testProvider(name: string): Promise<{ ok: boolean; detail: string
       );
       return r.ok ? { ok: true, detail: "Connected (1 unit)" } : { ok: false, detail: `HTTP ${r.status}` };
     }
+    if (name === "SERPAPI_KEY") {
+      // account endpoint validates the key without spending a search
+      const r = await fetch(`https://serpapi.com/account.json?api_key=${key}`);
+      if (!r.ok) return { ok: false, detail: `HTTP ${r.status}` };
+      const acc = await r.json();
+      const left = acc.total_searches_left ?? acc.plan_searches_left;
+      return { ok: true, detail: left != null ? `Connected (${left} searches left)` : "Connected" };
+    }
     return { ok: false, detail: "Unknown provider." };
   } catch (e: any) {
     return { ok: false, detail: e.message };
