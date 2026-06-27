@@ -60,3 +60,12 @@ create table if not exists video_snapshots (
   taken_at    timestamptz not null default now()
 );
 create index if not exists idx_snap_video on video_snapshots(video_id, taken_at);
+
+-- Multi-channel: each connected channel keeps its own refresh token.
+create table if not exists channels (
+  channel_id    text primary key,
+  title         text,
+  thumb         text,
+  refresh_token text not null,
+  added_at      timestamptz not null default now()
+);

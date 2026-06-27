@@ -14,11 +14,12 @@ async function authedGet(url: string, token: string) {
   return r.json();
 }
 
-// GET /api/analytics — connection state + overview
-export async function GET() {
+// GET /api/analytics?channel=ID — connection state + overview for a channel
+export async function GET(req: NextRequest) {
   try {
     if (!(await isConnected())) return NextResponse.json({ connected: false });
-    const token = await accessToken();
+    const channel = new URL(req.url).searchParams.get("channel") || undefined;
+    const token = await accessToken(channel);
 
     // Channel basics + recent uploads
     const ch = await authedGet(`${DATA}/channels?part=snippet,statistics,contentDetails&mine=true`, token);
@@ -76,9 +77,9 @@ export async function GET() {
 // POST { video } — audience retention curve for one of your videos
 export async function POST(req: NextRequest) {
   try {
-    const { video } = await req.json();
+    const { video, channel } = await req.json();
     if (!video) return NextResponse.json({ error: "video id required" }, { status: 400 });
-    const token = await accessToken();
+    const token = await accessToken(channel);
 
     const end = new Date();
     const start = new Date(Date.now() - 365 * 864e5);
