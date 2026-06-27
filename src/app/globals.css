@@ -1,28 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap");
 
-/* ── YouRanking tokens ──────────────────────────────────────────
-   Identity: a signal control room. Deep ink, one hot signal-orange
-   for "this is hot", a calm green for healthy scores. Data is shown
-   in telemetry mono so numbers feel like instruments, not copy. */
+/* YouRanking — Daylight theme: light body, dark navy sidebar, orange
+   accent. green/amber/red carry score meaning only. */
 :root {
-  --ink: #0e1116;        /* background */
-  --surface: #161b22;    /* cards */
-  --surface-2: #1c232c;  /* raised */
-  --border: #232a33;
-  --text: #e6edf3;
-  --muted: #8b98a5;
-  --signal: #ff5b2e;     /* hot / accent */
-  --signal-dim: #ff5b2e22;
-  --good: #3ddc97;       /* healthy score */
-  --mid: #ffc857;        /* middling score */
-  --bad: #ff6b6b;        /* weak score */
-  --radius: 14px;
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-2: #f7f8fa;
+  --border: #e7e9ee;
+  --border-strong: #d7dae1;
+  --text: #1a1d24;
+  --muted: #6b7280;
+  --signal: #ff6d1f;
+  --signal-dim: #ff6d1f14;
+  --good: #16a34a;
+  --mid: #d97706;
+  --bad: #dc2626;
+  --radius: 12px;
+  --ink: var(--bg);
+  --nav-bg: #131a2d;
+  --nav-text: #9aa3b8;
+  --nav-active-bg: #1d2640;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  background: var(--ink);
+  background: var(--bg);
   color: var(--text);
   font-family: "Inter", system-ui, sans-serif;
   font-size: 15px;
@@ -30,71 +33,82 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.01em; }
+h1, h2, h3 { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.015em; color: var(--text); }
 .mono { font-family: "JetBrains Mono", monospace; }
 
-/* layout shell */
 .shell { display: flex; min-height: 100vh; }
 .sidebar {
-  width: 232px; flex-shrink: 0; border-right: 1px solid var(--border);
-  padding: 22px 16px; position: sticky; top: 0; height: 100vh;
-  background: var(--ink);
+  width: 236px; flex-shrink: 0; padding: 22px 14px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: var(--nav-bg);
 }
-.brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 28px; padding: 0 8px; }
-.brand b { font-family: "Space Grotesk"; font-weight: 700; font-size: 20px; }
+.brand { display: flex; align-items: baseline; gap: 2px; margin-bottom: 26px; padding: 0 10px; }
+.brand b { font-family: "Space Grotesk"; font-weight: 700; font-size: 20px; color: #fff; }
 .brand .dot { color: var(--signal); }
-.brand small { color: var(--muted); font-size: 11px; }
+.brand small { color: var(--nav-text); font-size: 11px; }
 
-.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav { display: flex; flex-direction: column; gap: 1px; }
 .nav a {
-  display: flex; align-items: center; gap: 10px; padding: 9px 10px;
-  border-radius: 10px; color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+  border-radius: 9px; color: var(--nav-text); text-decoration: none;
   font-size: 14px; transition: background .12s, color .12s;
 }
-.nav a:hover { background: var(--surface); color: var(--text); }
-.nav a.active { background: var(--signal-dim); color: var(--text); }
-.nav a .tag { margin-left: auto; font-size: 10px; color: var(--muted); }
+.nav a:hover { background: #1a2238; color: #cfd5e3; }
+.nav a.active { background: var(--nav-active-bg); color: #fff; font-weight: 500; }
+.nav a .tag { margin-left: auto; font-size: 10px; color: #6f7890; }
+.nav-logout {
+  margin-top: 14px; text-align: left; background: none; border: none;
+  color: var(--nav-text); font: inherit; font-size: 14px; padding: 9px 12px;
+  border-radius: 9px; cursor: pointer;
+}
+.nav-logout:hover { background: #1a2238; color: #ff8a8a; }
 
-.main { flex: 1; padding: 34px 40px; max-width: 980px; }
-.eyebrow { color: var(--signal); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
-.lede { color: var(--muted); margin-top: 6px; max-width: 60ch; }
+.main { flex: 1; padding: 36px 44px; max-width: 1000px; }
+.eyebrow { color: var(--signal); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; }
+.lede { color: var(--muted); margin-top: 6px; max-width: 62ch; }
 
-/* controls */
 .field {
-  width: 100%; background: var(--surface); border: 1px solid var(--border);
-  color: var(--text); border-radius: 10px; padding: 12px 14px; font: inherit;
+  width: 100%; background: var(--surface); border: 1px solid var(--border-strong);
+  color: var(--text); border-radius: 10px; padding: 11px 14px; font: inherit; font-size: 14px;
+  transition: border-color .12s, box-shadow .12s;
 }
-.field:focus { outline: 2px solid var(--signal); outline-offset: 1px; }
-.btn {
-  background: var(--signal); color: #1a0d07; border: none; font-weight: 600;
-  padding: 12px 18px; border-radius: 10px; cursor: pointer; font: inherit;
-  font-weight: 600;
-}
-.btn:disabled { opacity: .5; cursor: not-allowed; }
-.btn.ghost { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+.field::placeholder { color: #9aa1ad; }
+.field:focus { outline: none; border-color: var(--signal); box-shadow: 0 0 0 3px var(--signal-dim); }
 
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.btn {
+  background: var(--signal); color: #fff; border: none; font-weight: 600;
+  padding: 11px 18px; border-radius: 10px; cursor: pointer; font: inherit; font-size: 14px;
+  transition: filter .12s, transform .05s;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); font-weight: 500; }
+.btn.ghost:hover { background: var(--surface-2); filter: none; }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px; box-shadow: 0 1px 2px rgba(20,26,45,.04), 0 1px 3px rgba(20,26,45,.03);
+}
 .row { display: flex; gap: 12px; align-items: center; }
 .grid { display: grid; gap: 12px; }
 
-/* score chip — the telemetry signature */
-.score { font-family: "JetBrains Mono"; font-weight: 700; font-size: 13px; padding: 3px 8px; border-radius: 7px; }
-.score.good { background: #3ddc9722; color: var(--good); }
-.score.mid  { background: #ffc85722; color: var(--mid); }
-.score.bad  { background: #ff6b6b22; color: var(--bad); }
+.score { font-family: "JetBrains Mono"; font-weight: 700; font-size: 13px; padding: 3px 9px; border-radius: 7px; }
+.score.good { background: #dcfce7; color: #15803d; }
+.score.mid  { background: #fef3c7; color: #b45309; }
+.score.bad  { background: #fee2e2; color: #b91c1c; }
 
 .err { color: var(--bad); font-size: 14px; }
 .muted { color: var(--muted); }
-.stub-note { border-left: 2px solid var(--signal); padding-left: 14px; color: var(--muted); }
+.stub-note { border-left: 2px solid var(--signal); padding-left: 14px; color: var(--muted); border-radius: 0; }
 
-@media (max-width: 720px) {
+select.field {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+}
+
+@media (max-width: 760px) {
   .sidebar { display: none; }
   .main { padding: 22px; }
 }
-
-.nav-logout {
-  margin-top: 12px; text-align: left; background: none; border: none;
-  color: var(--muted); font: inherit; font-size: 14px; padding: 9px 10px;
-  border-radius: 10px; cursor: pointer;
-}
-.nav-logout:hover { background: var(--surface); color: var(--bad); }
